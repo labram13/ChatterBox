@@ -20,6 +20,6 @@ A full-stack chat chat application with a goal of sending messages to individual
 
 | Priority | User | Description | Technical Implementation |
 |----------|------|-------------|-------------------------|
-| test         |    test  |       test      |            test             |
-|          |      |             |                         |
+| P0 | As a user, I want to be able to register a  new account and login with my credentials |Register new user into SQL database. Confirm login credentials by accessing SQL DB| Save new user into SQL Database. Check user credentials within DB to confirm login.|
+| P0 | As a user, I want to have my sessions secured when using the app. | Authenticate the user's session  | Send JWT tokens to user's cookie|
 |          |      |             |                         |
