@@ -32,3 +32,6 @@ A full-stack chat chat application with a goal of sending messages to individual
 |P2| As a user, I want to create servers where I can host my friends to chat as a group| Users viewing and sending messsages to a select group of people| Use Socket.io to connect others to a 'room' in which only those individuals who are part of said room can send and see messages.
 |P2| As a server admin, I want the ability to edit server details and server population. | Give server creator admin privileges.| Create Role-Based-Actions for CRUD operations with servers using authorization methods (Admin, Viewer, Editor).
 
+
+### Database Schema (In Progress)!
+[Screenshot of database schema](./project-images/schema.jpg)
