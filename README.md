@@ -16,6 +16,7 @@ A full-stack chat chat application with a goal of sending messages to individual
 - Socket.io (websockets)
 - Docker
 - Trello (Project Management/Kanban Board)
+- Figma (UI/UX Design)
 
 ### User Stories
 
