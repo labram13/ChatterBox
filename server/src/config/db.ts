@@ -1,7 +1,7 @@
 import pkg from 'pg'
 import dotenv from 'dotenv'
 import path from 'path'
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 const {Pool} = pkg
 
 const pool = new Pool({
@@ -12,8 +12,7 @@ const pool = new Pool({
     database: process.env.DB_NAME
 })
 
-pool.on('connect', () => console.log('Connected to PostgreSQL'));
-
+export default pool;
 
 
 

@@ -1,13 +1,24 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
-import './db'
+import pool from './config/db'
 
 const app = express()
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
-const PORT = 3000;
+const PORT = 3001;
+
+
+
+// pool.query('SELECT NOW()', (err, res) => {
+//   if (err) {
+//     console.error('Database connection failed:', err.message);
+//   } else {
+//     console.log('Connected to PostgreSQL at:', res.rows[0].now);
+//   }
+// });
+
 
 type User = {
     username: string,
@@ -28,4 +39,4 @@ app.get('/', (req, res) => {
 
 
 
-app.listen(PORT, () => console.log("listening to port 3000"))
+app.listen(PORT, () => console.log("listening to port 3001"))
