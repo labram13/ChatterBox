@@ -1,5 +1,6 @@
 import express from 'express'
 import cookieParser from 'cookie-parser'
+import './db'
 
 const app = express()
 app.use(cookieParser())
