@@ -1,0 +1,57 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    border: solid #d9d9d9;
+    height: 515px;
+    width: 328px;
+    padding: .75rem;
+    margin: 1.5rem;
+    border-radius: .25rem;
+}
+
+h2 {
+    align-self: center;
+}
+
+form input {
+    height: 2rem;
+    padding: .75rem;
+    border: solid 1px #d9d9d9;
+    border-radius: 5px;
+ 
+
+}
+
+form button {
+    height: 2rem;
+    border: none;
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+}
+
+.register-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.register {
+    background: none;
+    color: black;
+    font-weight: bold;
+}
+
+form svg {
+    align-self: center;
+}
+
+.login-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
