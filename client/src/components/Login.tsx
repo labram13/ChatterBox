@@ -1,6 +1,7 @@
-import './Login.css'
+import './Onboarding.css'
 import Logo from '../assets/chatterbox.svg?react'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
 interface Credentials {
@@ -20,9 +21,6 @@ export default function Login() {
             password: formData.get("password") as string
         }
 
-        // console.log(credentials)
-
-        // setStatus("sent password")
 
         try {
             const response = await fetch('http://localhost:3001/api/auth', {
@@ -48,7 +46,7 @@ export default function Login() {
 
     return (
         <form action={login}>
-                <div className="login-header">
+            <div className="login-header">
                 <Logo />
                 <h2>Login</h2>
             </div>
@@ -60,7 +58,7 @@ export default function Login() {
             <p>{status}</p>
             <div className="register-row">
                 <p>Don't have an account?</p> 
-                <button className="register">Register</button>
+                <Link to="/register" className="register">Register</Link>
             </div>
 
 
