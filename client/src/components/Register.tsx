@@ -79,6 +79,7 @@ export default function Register() {
     
                 })}/>
                 <p className='error'>{errors.password?.message}</p>
+                </div>
 
                 <div className='input'>
                     <input type='password' id='confirm-password' placeholder='Re-type Password' {...register('confirmPassword', {
@@ -92,7 +93,6 @@ export default function Register() {
                     <p className='error'>{errors.confirmPassword?.message}</p>
 
                 </div>
-            </div>
           
             <button type='submit'>Register</button>
 
