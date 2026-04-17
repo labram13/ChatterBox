@@ -39,9 +39,19 @@ export default  function Register() {
 
         const responseJson = await response.json();
 
-        //create check for if username exists, setError
+        if (responseJson.message === "user exists") {
+            setError('username', {
+                type: 'manual',
+                message: 'Username already exists'
+            })
+        }
 
-        //create check for if email exists, setError
+        if (responseJson.message === 'email exists') {
+            setError('email', {
+                type: 'manual',
+                message: 'Please use a different Email'
+            })
+        }
      
 
     }
