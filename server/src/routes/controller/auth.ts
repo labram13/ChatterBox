@@ -1,5 +1,5 @@
 import express from 'express'
-import pool from '../../config/db.js'
+import pool from '../../config/db'
 
 const router = express.Router();
 
@@ -13,22 +13,37 @@ type User = {
 type RegisterResponse = {
     message: string
 }
+
 router.post('/', async (req, res) => {
 
-    const newUser: User = req.body
-    // console.log(newUser)
+    const newUser: User = req.body.newUser
 
-    const userExists = await pool.query(
-        'SELECT * FROM users where username = $1 OR email = $2',
-        [newUser.username, newUser.email]
+    //check for username if it exists
+    const usernameExists = await pool.query(
+        'SELECT * FROM users where username = $1',
+        [newUser.username]
     )
 
-    if (userExists.rows.length !== 0) {
+    console.log(usernameExists.rows)
+
+    if (usernameExists.rows.length !== 0) {
         return res.status(400).json({message: "user exists"})
     }
 
+    //check for email if it exists
+
+    const emailExists = await pool.query(
+        'SELECT * FROM users where email = $1',
+        [newUser.email]
+    )
+
+    if (emailExists.rows.length !== 0) {
+        return res.status(400).json({message: "email exists"})
+    }
+
     const addUser = await pool.query(
-        'INSERT INTO users ('
+        'INSERT INTO users (email, username, password) VALUES ($1, $2, $3)', 
+        [newUser.email, newUser.username, newUser.password]
     )
 
     

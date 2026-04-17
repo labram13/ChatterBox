@@ -21,7 +21,7 @@ export default  function Register() {
     const onSubmit = async (data: FormValues) => {
         const {confirmPassword, ...newUser}:FormValues = data
 
-        console.log(newUser)
+        // console.log(newUser)
 
 
         
@@ -36,6 +36,12 @@ export default  function Register() {
             })
 
         })
+
+        const responseJson = await response.json();
+
+        //create check for if username exists, setError
+
+        //create check for if email exists, setError
      
 
     }
