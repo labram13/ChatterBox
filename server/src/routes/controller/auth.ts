@@ -1,6 +1,8 @@
 import express from 'express'
 import pool from '../../config/db'
 import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const router = express.Router();
 
@@ -17,6 +19,9 @@ type RegisterResponse = {
 
 router.post('/', async (req, res) => {
 
+    console.log("access token", process.env.ACCESS_TOKEN)
+    console.log("refresh token", process.env.REFRESH_TOKEN)
+
     const newUser: User = req.body.newUser
 
     //check for username if it exists
@@ -25,7 +30,7 @@ router.post('/', async (req, res) => {
         [newUser.username]
     )
 
-    console.log(usernameExists.rows)
+    // console.log(usernameExists.rows)
 
     if (usernameExists.rows.length !== 0) {
         return res.status(400).json({message: "user exists"})

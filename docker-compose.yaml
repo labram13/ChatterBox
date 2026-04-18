@@ -25,6 +25,8 @@ services:
       DB_USER: labradml
       DB_PASS: pass
       DB_NAME: chatterbox_db
+      ACCESS_TOKEN: 5088f4937e3ac86e57f1a3dfd422a72ce8be8d62070d0f38d30e7a563ee78cf5edfd93b73060a3f42ea981401569ff70fc7d12c71ecd4367cb19ee9ebb9f08de
+      REFRESH_TOKEN: 75d391935b3e1c4ae4e9299b3b513f611751bf620ea2d149b361537d096f1525971b1054bf7ba75ad0b6fb95f90649787fb307108f8a0b7d8186eca265f21c89
     develop:
       watch:
         - action: sync
