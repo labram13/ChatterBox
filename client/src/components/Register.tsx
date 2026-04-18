@@ -21,11 +21,6 @@ export default  function Register() {
     const onSubmit = async (data: FormValues) => {
         const {confirmPassword, ...newUser}:FormValues = data
 
-        // console.log(newUser)
-
-
-        
-
         const response = await fetch('http://localhost:3001/api/auth', {
             method: 'POST',
             headers: {
@@ -39,19 +34,28 @@ export default  function Register() {
 
         const responseJson = await response.json();
 
-        if (responseJson.message === "user exists") {
-            setError('username', {
-                type: 'manual',
-                message: 'Username already exists'
-            })
+        if (response.ok) {
+            
+
+        } else {
+            if (responseJson.message === "user exists") {
+                setError('username', {
+                    type: 'manual',
+                    message: 'Username already exists'
+                })
+            }
+    
+            if (responseJson.message === 'email exists') {
+                setError('email', {
+                    type: 'manual',
+                    message: 'Please use a different Email'
+                })
+            }
+         
+
         }
 
-        if (responseJson.message === 'email exists') {
-            setError('email', {
-                type: 'manual',
-                message: 'Please use a different Email'
-            })
-        }
+      
      
 
     }

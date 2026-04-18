@@ -1,5 +1,6 @@
 import express from 'express'
 import pool from '../../config/db'
+import bcrypt from 'bcrypt'
 
 const router = express.Router();
 
@@ -41,9 +42,11 @@ router.post('/', async (req, res) => {
         return res.status(400).json({message: "email exists"})
     }
 
+    const hashedPassword: string = await bcrypt.hash(newUser.password, 10)
+
     const addUser = await pool.query(
         'INSERT INTO users (email, username, password) VALUES ($1, $2, $3)', 
-        [newUser.email, newUser.username, newUser.password]
+        [newUser.email, newUser.username, hashedPassword]
     )
 
     
