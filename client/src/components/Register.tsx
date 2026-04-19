@@ -1,6 +1,5 @@
 import './Onboarding.css'
 import Logo from '../assets/chatterbox.svg?react'
-import {useState} from 'react'
 import { useForm } from 'react-hook-form'
 
 
@@ -10,7 +9,6 @@ type FormValues = {
     password: string,
     confirmPassword?: string,
 }
-
 
 export default  function Register() {
     const form = useForm<FormValues>()
@@ -51,17 +49,8 @@ export default  function Register() {
                     message: 'Please use a different Email'
                 })
             }
-         
-
         }
-
-      
-     
-
     }
-
-
-  
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

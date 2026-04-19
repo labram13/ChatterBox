@@ -2,6 +2,7 @@ import './Onboarding.css'
 import Logo from '../assets/chatterbox.svg?react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import {useForm} from 'react-hook-form'
 
 
 interface Credentials {
@@ -9,59 +10,31 @@ interface Credentials {
     password: string
 }
 export default function Login() {
+    const form = useForm<Credentials>()
 
-    const [status, setStatus] = useState<null | string>(null)
+    const { register, control, handleSubmit, formState, setError, watch} = form
 
-
-
-    async function login(formData: FormData) {
-
-        const credentials: Credentials = {
-            username: formData.get("username") as string,
-            password: formData.get("password") as string
-        }
-
-
-        try {
-            const response = await fetch('http://localhost:3001/api/auth', {
-                method: 'POST', 
-                credentials: 'same-origin',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(credentials)
-            })
-    
-            const responseData = await response.json();
-            console.log(responseData)
-            setStatus(responseData.status)
-
-        } catch (error) {
-            console.log(error)
-        }
-
-       
-
+    const onSubmit = async (data:Credentials) => {
+        console.log('submit working')
     }
 
     return (
-        <form action={login}>
+        <form  onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="login-header">
                 <Logo />
                 <h2>Login</h2>
             </div>
-    
 
-            <input required type="text" name="username" placeholder='username'/>
-            <input required type="text"name="password" placeholder='password'/>
-            <button type="submit">Login</button>
-            <p>{status}</p>
-            <div className="register-row">
-                <p>Don't have an account?</p> 
-                <Link to="/register" className="register">Register</Link>
+            <div className="input">
+                <input type='text' id='username' placeholder='Username'/>
             </div>
 
+            <div className='input'>
+                <input type='text' id='password' placeholder='Password'/>
 
+            </div>
+
+            <button type='submit'>Login</button>
 
         </form>
     )
