@@ -16,8 +16,6 @@ export default function Login() {
     const { errors } = formState;
 
     const onSubmit = async (data:Credentials) => {
-        console.log(data)
-
 
         const response = await fetch('http://localhost:3001/api/auth/login', {
             method: 'POST', 
@@ -28,6 +26,26 @@ export default function Login() {
                 userCredentials: data
             })
         })
+
+        const responseJson = await response.json()
+
+        if (!response.ok) {
+            if (responseJson.status === 'user undefined') {
+                setError('username', {
+                    type: 'manual', 
+                    message: responseJson.message
+                })
+            }
+
+            if(responseJson.status === 'password error') {
+                setError('password', {
+                    type: 'manual', 
+                    message: responseJson.message
+                })
+            }
+        }
+
+
         
 
     }
@@ -52,7 +70,7 @@ export default function Login() {
 
             <div className='input'>
                 <h5>Password</h5>
-                <input type='text' id='password'  {...register('password', {
+                <input type='password' id='password'  {...register('password', {
                     required: {
                         value: true,
                         message: "Please enter password"

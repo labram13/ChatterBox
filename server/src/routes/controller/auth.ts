@@ -29,61 +29,66 @@ router.post('/register', async (req, res) => {
 
 
     const newUser: NewUser = req.body.newUser
-
     //check for username if it exists
-    const usernameExists = await pool.query(
-        'SELECT * FROM users where username = $1',
-        [newUser.username]
-    )
 
-    // console.log(usernameExists.rows)
+    try {
 
-    if (usernameExists.rows.length !== 0) {
-        return res.status(400).json({message: "user exists"})
-    }
-
-    //check for email if it exists
-
-    const emailExists = await pool.query(
-        'SELECT * FROM users where email = $1',
-        [newUser.email]
-    )
-
-    if (emailExists.rows.length !== 0) {
-        return res.status(400).json({message: "email exists"})
-    }
-
-    const hashedPassword: string = await bcrypt.hash(newUser.password, 10)
-
-    const addUser = await pool.query(
-        'INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING *', 
-        [newUser.email, newUser.username, hashedPassword]
-    )
-
-    const userInfo = addUser.rows[0]
-    const {password, ...user} = userInfo
-    const accessToken = generateAccessToken(user)
-    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN!, {expiresIn: '15m'})
-
-    const addRefreshToken = await pool.query(
-        'INSERT INTO refresh_tokens(user_id, token) VALUES ($1, $2)', 
-        [user.user_id, refreshToken]
-    )
-
+        const usernameExists = await pool.query(
+            'SELECT * FROM users where username = $1',
+            [newUser.username]
+        )
+        
+        // console.log(usernameExists.rows)
+        
+        if (usernameExists.rows.length !== 0) {
+            return res.status(400).json({message: "user exists"})
+        }
+        
+        //check for email if it exists
+        
+        const emailExists = await pool.query(
+            'SELECT * FROM users where email = $1',
+            [newUser.email]
+        )
+        
+        if (emailExists.rows.length !== 0) {
+            return res.status(400).json({message: "email exists"})
+        }
+        
+        const hashedPassword: string = await bcrypt.hash(newUser.password, 10)
+        
+        const addUser = await pool.query(
+            'INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING *', 
+            [newUser.email, newUser.username, hashedPassword]
+        )
+        
+        const userInfo = addUser.rows[0]
+        const {password, ...user} = userInfo
+        const accessToken = generateAccessToken(user)
+        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN!, {expiresIn: '15m'})
+        
+        const addRefreshToken = await pool.query(
+            'INSERT INTO refresh_tokens(user_id, token) VALUES ($1, $2)', 
+            [user.user_id, refreshToken]
+        )
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true, 
+            secure: true,
+            sameSite: 'strict', 
+            maxAge: 5 * 1000
+        })
     
-    res.cookie('accessToken', accessToken, {
-        httpOnly: true, 
-        secure: true,
-        sameSite: 'strict', 
-        maxAge: 5 * 1000
-    })
-
-    res.cookie('refreshToken', refreshToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'strict', 
-        maxAge: 15 * 60 * 1000
-    }).status(200).json({status: 'success'})
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict', 
+            maxAge: 15 * 60 * 1000
+        }).status(200).json({status: 'success'})
+    } catch (error) {
+        res.status(500).json({status: error})
+    }
+        
+    
 })
 
 function generateAccessToken(user: User) {
@@ -93,6 +98,34 @@ function generateAccessToken(user: User) {
 router.post('/login', async (req, res) => {
 
     const userCredentials: UserCredentials = req.body.userCredentials
-    console.log(userCredentials)
+    // console.log(userCredentials)
+
+    try {
+
+        const user = await pool.query(
+            'SELECT * FROM users WHERE username = $1', 
+            [userCredentials.username]
+        )
+
+        console.log(user.rows)
+
+        if (user.rows.length === 0) {
+            return res.status(400).json({
+                status: "user undefined",
+                message: 'User does not exist'
+            })
+        }
+
+        const comparePass = await bcrypt.compare(userCredentials.password, user.rows[0].password)
+
+        if (!comparePass) {
+            return res.status(400).json({
+                status: 'password error',
+                message: "Incorrect password"
+            })
+        }        
+    } catch (error) {
+        res.status(500).json({error: error})
+    }
 })
 export default router;
