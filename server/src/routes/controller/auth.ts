@@ -2,6 +2,7 @@ import express from 'express'
 import pool from '../../config/db'
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
+import jwt from 'jsonwebtoken'
 dotenv.config()
 
 const router = express.Router();
@@ -13,8 +14,10 @@ type NewUser = {
     password:string
 }
 
-type RegisterResponse = {
-    message: string
+type User = {
+    user_id: number, 
+    username: string,
+    email: string
 }
 
 router.post('/', async (req, res) => {
@@ -54,12 +57,16 @@ router.post('/', async (req, res) => {
 
     const user = addUser.rows[0]
     const {password, ...userWithoutPassword} = user
-    console.log(userWithoutPassword);
-    console.log("test123123")
+    const accessToken = generateAccessToken(userWithoutPassword)
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN!)
 
     
     res.status(200).json({status: 'success'})
 })
+
+function generateAccessToken(user: User) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '15s'})
+}
 
 
 export default router;
