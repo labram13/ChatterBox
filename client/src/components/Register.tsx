@@ -12,7 +12,7 @@ type FormValues = {
 
 export default  function Register() {
     const form = useForm<FormValues>()
-    const { register, control, handleSubmit, formState, setError, watch} = form
+    const { register, handleSubmit, formState, setError, watch} = form
     const { errors } = formState;
 
 

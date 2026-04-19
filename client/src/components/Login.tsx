@@ -10,7 +10,7 @@ interface Credentials {
 export default function Login() {
     const form = useForm<Credentials>()
 
-    const { register, control, handleSubmit, formState, setError, watch} = form
+    const { register, handleSubmit, formState, setError} = form
     const { errors } = formState;
 
     const onSubmit = async (data:Credentials) => {
