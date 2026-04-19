@@ -16,7 +16,20 @@ export default function Login() {
     const { errors } = formState;
 
     const onSubmit = async (data:Credentials) => {
-        console.log('submit working')
+        console.log(data)
+
+
+        const response = await fetch('http://localhost:3001/api/auth/login', {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json'
+            }, 
+            body: JSON.stringify({
+                userCredentials: data
+            })
+        })
+        
+
     }
 
     return (
@@ -27,7 +40,8 @@ export default function Login() {
             </div>
 
             <div className="input">
-                <input type='text' id='username' placeholder='Username' {...register("username", {
+                <h5>Username</h5>
+                <input type='text' id='username'  {...register("username", {
                     required: {
                         value: true,
                         message: "Please enter username"
@@ -37,7 +51,8 @@ export default function Login() {
             </div>
 
             <div className='input'>
-                <input type='text' id='password' placeholder='Password' {...register('password', {
+                <h5>Password</h5>
+                <input type='text' id='password'  {...register('password', {
                     required: {
                         value: true,
                         message: "Please enter password"

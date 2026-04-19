@@ -20,7 +20,12 @@ type User = {
     email: string
 }
 
-router.post('/', async (req, res) => {
+type UserCredentials = {
+    username: string,
+    password: string
+}
+
+router.post('/register', async (req, res) => {
 
 
     const newUser: NewUser = req.body.newUser
@@ -85,5 +90,9 @@ function generateAccessToken(user: User) {
     return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '5s'})
 }
 
+router.post('/login', async (req, res) => {
 
+    const userCredentials: UserCredentials = req.body.userCredentials
+    console.log(userCredentials)
+})
 export default router;
