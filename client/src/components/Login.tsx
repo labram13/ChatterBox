@@ -45,9 +45,6 @@ export default function Login() {
             }
         }
 
-
-        
-
     }
 
     return (
@@ -58,7 +55,7 @@ export default function Login() {
             </div>
 
             <div className="input">
-                <h5>Username</h5>
+                <label htmlFor='username'>Username</label>
                 <input type='text' id='username'  {...register("username", {
                     required: {
                         value: true,
@@ -69,7 +66,7 @@ export default function Login() {
             </div>
 
             <div className='input'>
-                <h5>Password</h5>
+                <label htmlFor='password'>Password</label>
                 <input type='password' id='password'  {...register('password', {
                     required: {
                         value: true,

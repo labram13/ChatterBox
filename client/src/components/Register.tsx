@@ -59,7 +59,8 @@ export default  function Register() {
                 <h2>Register</h2>
             </div>
             <div className="input">
-                <input type='text' id='username' placeholder='Username' {...register("username", {
+                <label htmlFor='username'>Username</label>
+                <input type='text' id='username' {...register("username", {
                     required: {
                         value: true,
                         message: "Username is required"}}
@@ -68,7 +69,8 @@ export default  function Register() {
             </div>
 
             <div className="input">
-                <input type="email" id="email" placeholder="Email"{...register("email", {
+                <label htmlFor='email'>Email</label>
+                <input type="email" id="email" {...register("email", {
                     required: {
                         value: true,
                         message: "Email is required"
@@ -82,7 +84,8 @@ export default  function Register() {
             </div>
 
             <div className="input"> 
-                <input type='password' id='password' placeholder='Password' {...register("password", {
+                <label htmlFor='password'>Password</label>
+                <input type='password' id='password' {...register("password", {
                     required: {
                         value: true,
                         message: "Password is required"
@@ -109,7 +112,8 @@ export default  function Register() {
                 </div>
 
                 <div className='input'>
-                    <input type='password' id='confirm-password' placeholder='Re-type Password' {...register('confirmPassword', {
+                    <label htmlFor='confirm-password'>Re-enter password</label>
+                    <input type='password' id='confirm-password' {...register('confirmPassword', {
                         required: {
                             value: true,
                             message: "Confirm password"
