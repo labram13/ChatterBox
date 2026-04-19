@@ -7,7 +7,7 @@ dotenv.config()
 const router = express.Router();
 
 
-type User = {
+type NewUser = {
     username:string,
     email:string,
     password:string
@@ -19,10 +19,8 @@ type RegisterResponse = {
 
 router.post('/', async (req, res) => {
 
-    console.log("access token", process.env.ACCESS_TOKEN)
-    console.log("refresh token", process.env.REFRESH_TOKEN)
 
-    const newUser: User = req.body.newUser
+    const newUser: NewUser = req.body.newUser
 
     //check for username if it exists
     const usernameExists = await pool.query(
@@ -50,12 +48,18 @@ router.post('/', async (req, res) => {
     const hashedPassword: string = await bcrypt.hash(newUser.password, 10)
 
     const addUser = await pool.query(
-        'INSERT INTO users (email, username, password) VALUES ($1, $2, $3)', 
+        'INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING *', 
         [newUser.email, newUser.username, hashedPassword]
     )
+
+    const user = addUser.rows[0]
+    const {password, ...userWithoutPassword} = user
+    console.log(userWithoutPassword);
+    console.log("test123123")
 
     
     res.status(200).json({status: 'success'})
 })
+
 
 export default router;
