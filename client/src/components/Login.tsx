@@ -1,7 +1,5 @@
 import './Onboarding.css'
 import Logo from '../assets/chatterbox.svg?react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import {useForm} from 'react-hook-form'
 
 
