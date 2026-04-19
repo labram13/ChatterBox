@@ -13,6 +13,7 @@ export default function Login() {
     const form = useForm<Credentials>()
 
     const { register, control, handleSubmit, formState, setError, watch} = form
+    const { errors } = formState;
 
     const onSubmit = async (data:Credentials) => {
         console.log('submit working')
@@ -26,11 +27,23 @@ export default function Login() {
             </div>
 
             <div className="input">
-                <input type='text' id='username' placeholder='Username'/>
+                <input type='text' id='username' placeholder='Username' {...register("username", {
+                    required: {
+                        value: true,
+                        message: "Please enter username"
+                    }
+                })}/>
+                <p className='error'>{errors.username?.message}</p>
             </div>
 
             <div className='input'>
-                <input type='text' id='password' placeholder='Password'/>
+                <input type='text' id='password' placeholder='Password' {...register('password', {
+                    required: {
+                        value: true,
+                        message: "Please enter password"
+                    }
+                })}/>
+            <p className='error'>{errors.password?.message}</p>
 
             </div>
 
