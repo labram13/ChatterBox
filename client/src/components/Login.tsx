@@ -43,6 +43,8 @@ export default function Login() {
             }
         }
 
+        console.log(responseJson.status)
+
     }
 
     return (

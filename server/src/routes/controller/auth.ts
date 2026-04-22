@@ -66,10 +66,12 @@ router.post('/register', async (req, res) => {
         const {password, ...user} = userInfo
         const accessToken = generateAccessToken(user)
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN!, {expiresIn: '15m'})
+
+        console.log(user)
         
         const addRefreshToken = await pool.query(
             'INSERT INTO refresh_tokens(user_id, token) VALUES ($1, $2)', 
-            [user.user_id, refreshToken]
+            [user, refreshToken]
         )
         res.cookie('accessToken', accessToken, {
             httpOnly: true, 
@@ -91,41 +93,71 @@ router.post('/register', async (req, res) => {
     
 })
 
-function generateAccessToken(user: User) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '5s'})
-}
+
 
 router.post('/login', async (req, res) => {
 
     const userCredentials: UserCredentials = req.body.userCredentials
-    // console.log(userCredentials)
 
     try {
 
-        const user = await pool.query(
+        const userInfo = await pool.query(
             'SELECT * FROM users WHERE username = $1', 
             [userCredentials.username]
         )
 
-        console.log(user.rows)
 
-        if (user.rows.length === 0) {
+        if (userInfo.rows.length === 0) {
             return res.status(400).json({
                 status: "user undefined",
                 message: 'User does not exist'
             })
         }
 
-        const comparePass = await bcrypt.compare(userCredentials.password, user.rows[0].password)
+        const {password, ...user} = userInfo.rows[0]
+        console.log(user)
+
+        const comparePass = await bcrypt.compare(userCredentials.password, password)
 
         if (!comparePass) {
             return res.status(400).json({
                 status: 'password error',
                 message: "Incorrect password"
             })
-        }        
+        }
+
+        const accessToken = generateAccessToken(user)
+        const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN!, {expiresIn: '15m'
+        })
+
+        await pool.query(
+            'INSERT INTO refresh_tokens(user_id, token) VALUES($1, $2)',
+            [user.user_id, refreshToken]
+        )
+
+        res.cookie('accessToken', accessToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict', 
+            maxAge: 5 * 1000
+        })
+
+        res.cookie('refresToken', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict', 
+            maxAge: 15 * 60 * 1000
+
+        }).status(200).json({status: 'success'})
+
+        
+        
     } catch (error) {
         res.status(500).json({error: error})
     }
 })
+
+function generateAccessToken(user: User) {
+    return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '5s'})
+}
 export default router;
