@@ -14,7 +14,7 @@ function RequireAuth() {
   }
 }
 
-const isAuthenticated = true;
+const isAuthenticated = true
 
 function App() {
 
@@ -27,8 +27,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}/>
         </Route>
 
-        <Route path='/login' element={<Navigate to={isAuthenticated ? '/dashboard' : 'login'}/>}/>
-        <Route path='/register' element={<Navigate to={isAuthenticated ? '/dashboard' : 'register'}/>}/>
+        <Route path='/login' element={isAuthenticated ? <Navigate to='/dashboard'/> : <Login />}/>
+        <Route path='/register' element={isAuthenticated ? <Navigate to='/dashboard'/> : <Register />}/>
 
       </Routes>
     </div>
