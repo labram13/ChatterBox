@@ -68,19 +68,19 @@ router.post('/register', async (req, res) => {
         
         const addRefreshToken = await pool.query(
             'INSERT INTO refresh_tokens(user_id, token) VALUES ($1, $2)', 
-            [user, refreshToken]
+            [user.user_id, refreshToken]
         )
         res.cookie('accessToken', accessToken, {
             httpOnly: true, 
-            secure: true,
-            sameSite: 'strict', 
-            maxAge: 5 * 1000
+            secure: false,
+            sameSite: 'lax', 
+            maxAge: 60 * 1000
         })
     
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: 'strict', 
+            secure: false,
+            sameSite: 'lax', 
             maxAge: 15 * 60 * 1000
         }).status(200).json({status: 'success'})
     } catch (error) {
@@ -95,6 +95,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 
     const userCredentials: UserCredentials = req.body.userCredentials
+    console.log(userCredentials)
 
     try {
 
@@ -133,15 +134,15 @@ router.post('/login', async (req, res) => {
 
         res.cookie('accessToken', accessToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: 'strict', 
-            maxAge: 5 * 1000
+            secure: false,
+            sameSite: 'lax', 
+            maxAge: 60 * 1000
         })
 
-        res.cookie('refresToken', refreshToken, {
+        res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: true,
-            sameSite: 'strict', 
+            secure: false,
+            sameSite: 'lax', 
             maxAge: 15 * 60 * 1000
 
         }).status(200).json({status: 'success'})
@@ -149,6 +150,7 @@ router.post('/login', async (req, res) => {
         
         
     } catch (error) {
+        console.log(error)
         res.status(500).json({error: error})
     }
 })
@@ -157,6 +159,13 @@ router.post('/login', async (req, res) => {
 router.post('/verify', authenticateToken, async (req, res) => {
     console.log('hit /verify')
     res.status(200).json({status: "success"})
+})
+
+router.get('/debug-cookies', (req, res) => {
+  res.json({
+    headers: req.headers.cookie,
+    parsed: req.cookies
+  })
 })
 
 function generateAccessToken(user: User) {

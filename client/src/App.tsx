@@ -22,13 +22,17 @@ function App() {
   }, [])
 
   async function UserAuth () {
-    const response = await fetch('http://localhost:3001/api/user/verify', {
-      method: 'POST', 
+    // const response = await fetch('http://localhost:3001/api/user/verify', {
+    //   method: 'POST', 
+    //   credentials: 'include'
+    // })
+    
+    const response = await fetch('http://localhost:3001/api/user/debug-cookies', {
+      method: 'GET', 
       credentials: 'include'
     })
-
     const responseJson = await response.json()
-    console.log(responseJson.status)
+    console.log(responseJson)
 
  
   }
