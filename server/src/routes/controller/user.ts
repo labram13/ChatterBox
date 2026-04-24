@@ -169,6 +169,6 @@ router.get('/debug-cookies', (req, res) => {
 })
 
 function generateAccessToken(user: User) {
-    return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '5s'})
+    return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '60s'})
 }
 export default router;

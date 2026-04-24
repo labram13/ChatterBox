@@ -5,7 +5,7 @@ dotenv.config()
 
 
 export function authenticateToken(req:Request, res:Response, next:NextFunction) {
-    const cookie = req.headers
+    const cookie = req.cookies
     console.log(cookie)
     console.log("hit middleware")
     next()

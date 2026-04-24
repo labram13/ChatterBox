@@ -27,8 +27,8 @@ function App() {
     //   credentials: 'include'
     // })
     
-    const response = await fetch('http://localhost:3001/api/user/debug-cookies', {
-      method: 'GET', 
+    const response = await fetch('api/user/verify', {
+      method: 'POST', 
       credentials: 'include'
     })
     const responseJson = await response.json()
