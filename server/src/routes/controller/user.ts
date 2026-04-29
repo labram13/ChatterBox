@@ -105,7 +105,7 @@ router.post('/login', async (req, res) => {
         )
 
 
-        if (userInfo.rows.length === 0) {
+        if (userInfo.rows[0] === undefined) {
             return res.status(400).json({
                 status: "user undefined",
                 message: 'User does not exist'
@@ -161,12 +161,6 @@ router.post('/verify', authenticateToken, async (req, res) => {
     res.status(200).json({status: "success"})
 })
 
-router.get('/debug-cookies', (req, res) => {
-  res.json({
-    headers: req.headers.cookie,
-    parsed: req.cookies
-  })
-})
 
 function generateAccessToken(user: User) {
     return jwt.sign(user, process.env.ACCESS_TOKEN!, {expiresIn: '60s'})

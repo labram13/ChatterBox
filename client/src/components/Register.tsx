@@ -1,7 +1,7 @@
 import '../css/Onboarding.css'
 import Logo from '../assets/chatterbox.svg?react'
 import { useForm } from 'react-hook-form'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 
 type FormValues = {
@@ -15,6 +15,7 @@ export default  function Register() {
     const form = useForm<FormValues>()
     const { register, handleSubmit, formState, setError, watch} = form
     const { errors } = formState;
+    const navigate = useNavigate()
 
 
     const onSubmit = async (data: FormValues) => {
@@ -34,7 +35,7 @@ export default  function Register() {
         const responseJson = await response.json();
 
         if (response.ok) {
-            console.log("success")
+            navigate('/dashboard')
 
         } else {
             if (responseJson.message === "user exists") {

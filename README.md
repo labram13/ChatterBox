@@ -38,7 +38,7 @@ A full-stack chat chat application with a goal of sending messages to individual
 ![Workflow Diagram](./project-images/workflow.jpg)
 
 ### Dataflow Diagram
-![Dataflow Diagram](./project-images/dataflow.jpg)
+![Dataflow Diagram](./project-images/dataflow.png)
 
 
 ### Database Schema (In Progress)

@@ -5,38 +5,13 @@ import Register from './components/Register'
 import Dashboard from './components/Dashboard'
 import {useState, useEffect} from 'react'
 
-
+ 
 
 
 
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
-
-  useEffect( () => {
-
-    UserAuth()
-
-    setIsLoggedIn(false)
-
-  }, [])
-
-  async function UserAuth () {
-    // const response = await fetch('http://localhost:3001/api/user/verify', {
-    //   method: 'POST', 
-    //   credentials: 'include'
-    // })
-    
-    const response = await fetch('api/user/verify', {
-      method: 'POST', 
-      credentials: 'include'
-    })
-    const responseJson = await response.json()
-    console.log(responseJson)
-
- 
-  }
-
   function AuthCheckDashboard() {
     return isLoggedIn ? <Outlet /> : <Navigate to='/login' />
   }
@@ -44,6 +19,23 @@ function App() {
   function AuthCheckLoginRegister() {
     return isLoggedIn ? <Navigate to='/dashboard' /> : <Outlet />
   }
+
+  useEffect( () => {
+   (async () => {
+     const response = await fetch('api/user/verify', {
+      method: 'POST', 
+      credentials: 'include'
+    })
+    setIsLoggedIn(response.ok)
+   })()
+
+  }, [])
+
+   if (isLoggedIn === null) {
+    return <div>Loading...</div>
+  }
+
+ 
 
   return (
     <div className="container">
@@ -55,7 +47,7 @@ function App() {
         </Route>
 
         <Route element={<AuthCheckLoginRegister />}>
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
           <Route path='/register' element={<Register />} />
         </Route>
 

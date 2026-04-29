@@ -1,18 +1,24 @@
 import '../css/Onboarding.css'
 import Logo from '../assets/chatterbox.svg?react'
 import {useForm} from 'react-hook-form'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate, useOutletContext} from 'react-router-dom'
+import type {Dispatch, SetStateAction} from 'react'
 
 
 interface Credentials {
     username: string,
     password: string
 }
-export default function Login() {
-    const form = useForm<Credentials>()
 
+interface SetLoginStatus {
+  setIsLoggedIn: Dispatch<SetStateAction<boolean | null>>
+}
+export default function Login({setIsLoggedIn}: SetLoginStatus) {
+    const navigate = useNavigate()
+    const form = useForm<Credentials>()
     const { register, handleSubmit, formState, setError} = form
     const { errors } = formState;
+
 
     const onSubmit = async (data:Credentials) => {
 
@@ -42,10 +48,10 @@ export default function Login() {
                     message: responseJson.message
                 })
             }
+            return
         }
-
-        console.log(responseJson.status)
-
+        setIsLoggedIn(true)
+        navigate('/dashboard', { replace: true });
     }
 
     return (
